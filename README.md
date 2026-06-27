@@ -4,7 +4,7 @@ An interactive BMO companion component for React — the small computer friend f
 
 Live on [hansiah.com](https://hansiah.com) — click/tap him to see what he does.
 
-![BMO](./bmo.gif)
+![BMO](https://raw.githubusercontent.com/yhsiah/bmo-react/main/bmo.gif)
 
 ## What it does
 
