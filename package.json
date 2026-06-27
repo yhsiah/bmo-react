@@ -1,6 +1,6 @@
 {
   "name": "bmo-react",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Interactive BMO companion component for React — the small computer friend from Adventure Time",
   "main": "./dist/BMO.js",
   "module": "./dist/BMO.mjs",
@@ -12,11 +12,22 @@
       "require": "./dist/BMO.js"
     }
   },
-  "files": ["dist", "src"],
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
     "build": "tsup"
   },
-  "keywords": ["react", "component", "bmo", "adventure-time", "companion", "animation", "interactive"],
+  "keywords": [
+    "react",
+    "component",
+    "bmo",
+    "adventure-time",
+    "companion",
+    "animation",
+    "interactive"
+  ],
   "author": "Han Siah <han@hansiah.com>",
   "license": "MIT",
   "peerDependencies": {
