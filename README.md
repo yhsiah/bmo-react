@@ -67,7 +67,7 @@ const BLINK_MAX_INTERVAL_MS = 10000; // Maximum blink interval
 
 ## Styling
 
-BMO renders at 64×48px with a teal background and black border. No Tailwind required — all styles are inline. Override size or position with a wrapper `div`, or edit the inline styles in `BMO.tsx` directly.
+BMO renders at 64×48px with a teal background and black border. Override size or position with a wrapper `div`, or edit the styles in `BMO.tsx` directly.
 
 ## License
 
