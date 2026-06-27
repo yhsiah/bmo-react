@@ -1,6 +1,6 @@
 {
   "name": "bmo-react",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Interactive BMO companion component for React — the small computer friend from Adventure Time",
   "main": "./dist/BMO.js",
   "module": "./dist/BMO.mjs",
