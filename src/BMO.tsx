@@ -36,7 +36,11 @@ const RANDOM_EXPRESSION_COOLDOWN_MS = 1000;
 
 // Note: If you're using this component in Next.js App Router, add 'use client'
 // at the top of your file or in a wrapper component to opt in to client-side rendering.
-export default function BMO() {
+interface BMOProps {
+  startBoot?: boolean;
+}
+
+export default function BMO({ startBoot = true }: BMOProps) {
   const [showSpinner, setShowSpinner] = useState(false);
   const [isBooting, setIsBooting] = useState(true);
   const [bmoExpression, setBmoExpression] = useState<BmoExpression>('powerOff');
@@ -152,8 +156,9 @@ export default function BMO() {
     };
   }, [showRandomExpression]);
 
-  // Boot sequence on mount
+  // Boot sequence — triggers immediately by default, or waits for startBoot prop
   useEffect(() => {
+    if (!startBoot) return;
     setShowSpinner(true);
 
     safeSetTimeout(() => {
@@ -191,7 +196,7 @@ export default function BMO() {
       setLastInteractionTime(Date.now());
       setIsBooting(false);
     }, shouldYawn ? 4200 : 3400);
-  }, []);
+  }, [startBoot]);
 
   // Blink animations
   useEffect(() => {

@@ -44,6 +44,19 @@ export default function Page() {
 
 No props required — BMO boots and manages himself.
 
+### Delay the boot sequence
+
+Pass `startBoot` to control when BMO powers on — useful if you want him to boot after a loading screen, animation, or data fetch completes:
+
+```tsx
+const [ready, setReady] = useState(false);
+// ...trigger setReady(true) whenever you're ready
+
+<BMO startBoot={ready} />
+```
+
+BMO stays in `powerOff` state until `startBoot` flips to `true`, then runs his normal boot sequence.
+
 ## Console easter egg
 
 ```js
