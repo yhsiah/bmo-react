@@ -1,6 +1,6 @@
 # bmo-react
 
-An interactive BMO companion component for React/Next.js — the small computer friend from Adventure Time.
+An interactive BMO companion component for React — the small computer friend from Adventure Time.
 
 Live on [hansiah.com](https://hansiah.com) — click/tap him to see what he does.
 
@@ -19,8 +19,10 @@ Live on [hansiah.com](https://hansiah.com) — click/tap him to see what he does
 
 ## Requirements
 
-- **Next.js 13+** (uses `'use client'` and styled-jsx)
 - React 18+
+- TypeScript (the component is `.tsx`)
+
+**Next.js users:** add `'use client'` at the top of your importing file or a wrapper component.
 
 ## Usage
 
@@ -65,9 +67,7 @@ const BLINK_MAX_INTERVAL_MS = 10000; // Maximum blink interval
 
 ## Styling
 
-BMO renders at `w-16 h-12` (64×48px) with a teal background and black border to match his canonical colours. Override with a wrapper `div` or edit the Tailwind classes in the JSX directly.
-
-Requires **Tailwind CSS** — the component uses utility classes throughout.
+BMO renders at 64×48px with a teal background and black border. No Tailwind required — all styles are inline. Override size or position with a wrapper `div`, or edit the inline styles in `BMO.tsx` directly.
 
 ## License
 
