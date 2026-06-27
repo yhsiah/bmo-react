@@ -574,6 +574,7 @@ export default function BMO({ startBoot = true }: BMOProps) {
         role="button"
         tabIndex={0}
         style={{ cursor: 'pointer' }}
+        data-bmo-expression={bmoExpression}
         className={`${bmoBounce ? 'bmo-bounce' : ''} ${bmoWiggle ? 'bmo-wiggle' : ''}`}
         onClick={(e) => {
           e.stopPropagation();
