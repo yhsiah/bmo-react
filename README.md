@@ -4,7 +4,7 @@ An interactive BMO companion component for React/Next.js — the small computer 
 
 Live on [hansiah.com](https://hansiah.com) — click/tap him to see what he does.
 
-![BMO](https://hansiah.com/bmo-preview.png)
+![BMO](./bmo.gif)
 
 ## What it does
 
