@@ -26,10 +26,12 @@ Live on [hansiah.com](https://hansiah.com) — click/tap him to see what he does
 
 ## Usage
 
-Copy `src/BMO.tsx` into your project and drop it in:
+```bash
+npm install bmo-react
+```
 
 ```tsx
-import BMO from '@/components/BMO';
+import BMO from 'bmo-react';
 
 export default function Page() {
   return (

@@ -1,18 +1,31 @@
 {
   "name": "bmo-react",
   "version": "0.1.0",
-  "description": "BMO companion component for React/Next.js — the interactive character from Adventure Time",
-  "main": "src/BMO.tsx",
-  "keywords": ["react", "nextjs", "component", "bmo", "adventure-time", "companion", "animation"],
+  "description": "Interactive BMO companion component for React — the small computer friend from Adventure Time",
+  "main": "./dist/BMO.js",
+  "module": "./dist/BMO.mjs",
+  "types": "./dist/BMO.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/BMO.d.ts",
+      "import": "./dist/BMO.mjs",
+      "require": "./dist/BMO.js"
+    }
+  },
+  "files": ["dist", "src"],
+  "scripts": {
+    "build": "tsup"
+  },
+  "keywords": ["react", "component", "bmo", "adventure-time", "companion", "animation", "interactive"],
   "author": "Han Siah <han@hansiah.com>",
   "license": "MIT",
   "peerDependencies": {
     "react": ">=18",
-    "react-dom": ">=18",
-    "next": ">=13"
+    "react-dom": ">=18"
   },
   "devDependencies": {
-    "typescript": "^5.0.0",
-    "@types/react": "^19.0.0"
+    "@types/react": "^19.0.0",
+    "tsup": "^8.5.1",
+    "typescript": "^5.0.0"
   }
 }
