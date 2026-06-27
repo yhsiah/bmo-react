@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useEffect, useRef, useCallback } from 'react';
 
 type BmoExpression =
@@ -36,6 +34,8 @@ const BLINK_MIN_INTERVAL_MS = 3000;
 const BLINK_MAX_INTERVAL_MS = 10000;
 const RANDOM_EXPRESSION_COOLDOWN_MS = 1000;
 
+// Note: If you're using this component in Next.js App Router, add 'use client'
+// at the top of your file or in a wrapper component to opt in to client-side rendering.
 export default function BMO() {
   const [showSpinner, setShowSpinner] = useState(false);
   const [isBooting, setIsBooting] = useState(true);
@@ -158,7 +158,7 @@ export default function BMO() {
 
     safeSetTimeout(() => {
       setBmoExpression('powering');
-      const faceContent = bmoRef.current?.querySelector('.w-full.h-full') as HTMLElement | null;
+      const faceContent = bmoRef.current?.querySelector('[data-bmo-face]') as HTMLElement | null;
       if (faceContent) {
         faceContent.classList.add('pixelate-transition');
         setTimeout(() => { faceContent?.classList.remove('pixelate-transition'); }, 400);
@@ -247,7 +247,7 @@ export default function BMO() {
         setBmoExpression('yawn');
         safeSetTimeout(() => setBmoExpression('sleeping'), 800);
         safeSetTimeout(() => {
-          const faceContent = bmoRef.current?.querySelector('.w-full.h-full') as HTMLElement | null;
+          const faceContent = bmoRef.current?.querySelector('[data-bmo-face]') as HTMLElement | null;
           if (faceContent) {
             faceContent.classList.add('pixelate-transition');
             setTimeout(() => {
@@ -270,7 +270,7 @@ export default function BMO() {
     if (bmoExpression === 'backInFiveMinutes') {
       setHasShownBackInFive(false);
       const shouldYawn = Math.random() > 0.5;
-      const faceContent = bmoRef.current?.querySelector('.w-full.h-full') as HTMLElement | null;
+      const faceContent = bmoRef.current?.querySelector('[data-bmo-face]') as HTMLElement | null;
       if (faceContent) {
         faceContent.classList.add('pixelate-transition');
         setTimeout(() => {
@@ -389,108 +389,126 @@ export default function BMO() {
     }
   };
 
+  const faceBase = {
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#5eead4',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 8,
+  } as const;
+
+  const eyeRow = {
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: 40,
+    marginBottom: 8,
+  } as const;
+
   const bmoFaces: Record<BmoExpression, React.JSX.Element> = {
     powerOff: (
-      <div className="w-full h-full bg-teal-900 flex flex-col items-center justify-center p-2"></div>
+      <div data-bmo-face style={{ ...faceBase, backgroundColor: '#134e4a' }}></div>
     ),
     powering: (
-      <div className="w-full h-full bg-teal-300 flex flex-col items-center justify-center p-2"></div>
+      <div data-bmo-face style={faceBase}></div>
     ),
     yawn: (
-      <div className="w-full h-full bg-teal-300 flex flex-col items-center justify-center p-2">
-        <div className="flex justify-between w-10 mb-2">
-          <div className="w-2 h-px bg-black"></div>
-          <div className="w-2 h-px bg-black"></div>
+      <div data-bmo-face style={faceBase}>
+        <div style={eyeRow}>
+          <div style={{ width: 8, height: 1, backgroundColor: 'black' }}></div>
+          <div style={{ width: 8, height: 1, backgroundColor: 'black' }}></div>
         </div>
-        <div className="w-3 h-2 border-2 border-black rounded-full bg-teal-300"></div>
+        <div style={{ width: 12, height: 8, border: '2px solid black', borderRadius: 9999, backgroundColor: '#5eead4' }}></div>
       </div>
     ),
     sleeping: (
-      <div className="w-full h-full bg-teal-300 flex flex-col items-center justify-center p-2">
-        <div className="flex justify-between w-10 mb-2">
-          <div className="w-2 h-px bg-black"></div>
-          <div className="w-2 h-px bg-black"></div>
+      <div data-bmo-face style={faceBase}>
+        <div style={eyeRow}>
+          <div style={{ width: 8, height: 1, backgroundColor: 'black' }}></div>
+          <div style={{ width: 8, height: 1, backgroundColor: 'black' }}></div>
         </div>
-        <div className="w-6 h-px bg-black"></div>
+        <div style={{ width: 24, height: 1, backgroundColor: 'black' }}></div>
       </div>
     ),
     awake: (
-      <div className="w-full h-full bg-teal-300 flex flex-col items-center justify-center p-2">
-        <div className="flex justify-between w-10 mb-2">
-          <div className="w-1 h-1 rounded-full bg-black"></div>
-          <div className="w-1 h-1 rounded-full bg-black"></div>
+      <div data-bmo-face style={faceBase}>
+        <div style={eyeRow}>
+          <div style={{ width: 4, height: 4, borderRadius: 9999, backgroundColor: 'black' }}></div>
+          <div style={{ width: 4, height: 4, borderRadius: 9999, backgroundColor: 'black' }}></div>
         </div>
-        <div className="w-6 h-px bg-black"></div>
+        <div style={{ width: 24, height: 1, backgroundColor: 'black' }}></div>
       </div>
     ),
     blinkClosed: (
-      <div className="w-full h-full bg-teal-300 flex flex-col items-center justify-center p-2">
-        <div className="flex justify-between w-10 mb-2">
-          <div className="w-2 h-px bg-black"></div>
-          <div className="w-2 h-px bg-black"></div>
+      <div data-bmo-face style={faceBase}>
+        <div style={eyeRow}>
+          <div style={{ width: 8, height: 1, backgroundColor: 'black' }}></div>
+          <div style={{ width: 8, height: 1, backgroundColor: 'black' }}></div>
         </div>
-        <div className="w-6 h-px bg-black"></div>
+        <div style={{ width: 24, height: 1, backgroundColor: 'black' }}></div>
       </div>
     ),
     surprised: (
-      <div className="w-full h-full bg-teal-300 flex flex-col items-center justify-center p-2">
-        <div className="flex justify-between w-10 mb-2">
-          <div className="w-1.5 h-1.5 rounded-full bg-black"></div>
-          <div className="w-1.5 h-1.5 rounded-full bg-black"></div>
+      <div data-bmo-face style={faceBase}>
+        <div style={eyeRow}>
+          <div style={{ width: 6, height: 6, borderRadius: 9999, backgroundColor: 'black' }}></div>
+          <div style={{ width: 6, height: 6, borderRadius: 9999, backgroundColor: 'black' }}></div>
         </div>
-        <div className="w-3 h-1 rounded-full bg-black"></div>
+        <div style={{ width: 12, height: 4, borderRadius: 9999, backgroundColor: 'black' }}></div>
       </div>
     ),
     smile: (
-      <div className="w-full h-full bg-teal-300 flex flex-col items-center justify-center p-2">
-        <div className="flex justify-between w-10 mb-2">
-          <div className="w-2 h-px bg-black"></div>
-          <div className="w-2 h-px bg-black"></div>
+      <div data-bmo-face style={faceBase}>
+        <div style={eyeRow}>
+          <div style={{ width: 8, height: 1, backgroundColor: 'black' }}></div>
+          <div style={{ width: 8, height: 1, backgroundColor: 'black' }}></div>
         </div>
-        <div className="w-5 h-0.5 bg-black rounded-full"></div>
+        <div style={{ width: 20, height: 2, backgroundColor: 'black', borderRadius: 9999 }}></div>
       </div>
     ),
     happy: (
-      <div className="w-full h-full bg-teal-300 flex flex-col items-center justify-center p-2">
-        <div className="flex justify-between w-10 mb-2">
-          <div className="w-3 h-1.5 border-t border-black rounded-full"></div>
-          <div className="w-3 h-1.5 border-t border-black rounded-full"></div>
+      <div data-bmo-face style={faceBase}>
+        <div style={eyeRow}>
+          <div style={{ width: 12, height: 6, borderTop: '1px solid black', borderRadius: 9999 }}></div>
+          <div style={{ width: 12, height: 6, borderTop: '1px solid black', borderRadius: 9999 }}></div>
         </div>
-        <div className="w-5 h-1 bg-black rounded-full"></div>
+        <div style={{ width: 20, height: 4, backgroundColor: 'black', borderRadius: 9999 }}></div>
       </div>
     ),
     veryHappy: (
-      <div className="w-full h-full bg-teal-300 flex flex-col items-center justify-center p-2">
-        <div className="flex justify-between w-10 mb-2">
-          <div className="w-2.5 h-2 border-t border-l border-black transform rotate-45"></div>
-          <div className="w-2.5 h-2 border-t border-r border-black transform -rotate-45"></div>
+      <div data-bmo-face style={faceBase}>
+        <div style={eyeRow}>
+          <div style={{ width: 10, height: 8, borderTop: '1px solid black', borderLeft: '1px solid black', transform: 'rotate(45deg)' }}></div>
+          <div style={{ width: 10, height: 8, borderTop: '1px solid black', borderRight: '1px solid black', transform: 'rotate(-45deg)' }}></div>
         </div>
-        <div className="w-5 h-1 bg-black rounded-full"></div>
+        <div style={{ width: 20, height: 4, backgroundColor: 'black', borderRadius: 9999 }}></div>
       </div>
     ),
     excited: (
-      <div className="w-full h-full bg-teal-300 flex flex-col items-center justify-center p-2">
-        <div className="flex justify-between w-10 mb-2">
-          <div className="w-2.5 h-2 border-t border-l border-black transform rotate-45"></div>
-          <div className="w-2.5 h-2 border-t border-r border-black transform -rotate-45"></div>
+      <div data-bmo-face style={faceBase}>
+        <div style={eyeRow}>
+          <div style={{ width: 10, height: 8, borderTop: '1px solid black', borderLeft: '1px solid black', transform: 'rotate(45deg)' }}></div>
+          <div style={{ width: 10, height: 8, borderTop: '1px solid black', borderRight: '1px solid black', transform: 'rotate(-45deg)' }}></div>
         </div>
-        <div className="w-5 h-1.5 bg-black rounded-full"></div>
+        <div style={{ width: 20, height: 6, backgroundColor: 'black', borderRadius: 9999 }}></div>
       </div>
     ),
     unhappy: (
-      <div className="w-full h-full bg-teal-300 flex flex-col items-center justify-center p-2">
-        <div className="flex justify-between w-10 mb-2">
-          <div className="w-2 h-1 bg-black"></div>
-          <div className="w-2 h-1 bg-black"></div>
+      <div data-bmo-face style={faceBase}>
+        <div style={eyeRow}>
+          <div style={{ width: 8, height: 4, backgroundColor: 'black' }}></div>
+          <div style={{ width: 8, height: 4, backgroundColor: 'black' }}></div>
         </div>
-        <div className="w-4 h-0.5 bg-black rounded-full" style={{ transform: 'scaleY(-1)' }}></div>
+        <div style={{ width: 16, height: 2, backgroundColor: 'black', borderRadius: 9999, transform: 'scaleY(-1)' }}></div>
       </div>
     ),
     confused: (
-      <div className="w-full h-full bg-teal-300 flex flex-col items-center justify-center p-2">
-        <div className="flex justify-between w-10 mb-2">
-          <div className="w-1 h-1 rounded-full bg-black"></div>
-          <div className="w-1 h-1 rounded-full bg-black"></div>
+      <div data-bmo-face style={faceBase}>
+        <div style={eyeRow}>
+          <div style={{ width: 4, height: 4, borderRadius: 9999, backgroundColor: 'black' }}></div>
+          <div style={{ width: 4, height: 4, borderRadius: 9999, backgroundColor: 'black' }}></div>
         </div>
         <svg width="20" height="6" viewBox="0 0 20 6">
           <path d="M 2 3 Q 5 1, 10 3 T 18 3" stroke="black" strokeWidth="1.5" fill="none" strokeLinecap="round" />
@@ -498,17 +516,17 @@ export default function BMO() {
       </div>
     ),
     silly: (
-      <div className="w-full h-full bg-teal-300 flex flex-col items-center justify-center p-2">
-        <div className="flex justify-between w-10 mb-2">
-          <div className="w-1 h-1 rounded-full bg-black"></div>
-          <div className="w-1 h-1 rounded-full bg-black"></div>
+      <div data-bmo-face style={faceBase}>
+        <div style={eyeRow}>
+          <div style={{ width: 4, height: 4, borderRadius: 9999, backgroundColor: 'black' }}></div>
+          <div style={{ width: 4, height: 4, borderRadius: 9999, backgroundColor: 'black' }}></div>
         </div>
-        <span className="text-black text-xs" style={{ letterSpacing: '-0.25em', marginLeft: '-0.125em' }}>)——(</span>
+        <span style={{ color: 'black', fontSize: 12, letterSpacing: '-0.25em', marginLeft: '-0.125em' }}>)——(</span>
       </div>
     ),
     backInFiveMinutes: (
-      <div className="w-full h-full bg-teal-300 flex flex-col items-center justify-center p-1">
-        <div className="text-black text-[9px] font-bold leading-tight text-center">
+      <div data-bmo-face style={{ ...faceBase, padding: 4 }}>
+        <div style={{ color: 'black', fontSize: 9, fontWeight: 'bold', lineHeight: 1.25, textAlign: 'center' }}>
           BACK<br />IN<br />5 MINUTES
         </div>
       </div>
@@ -517,7 +535,7 @@ export default function BMO() {
 
   return (
     <>
-      <style jsx>{`
+      <style>{`
         @keyframes pixelate {
           0%, 100% { filter: blur(0px); opacity: 1; }
           50% { filter: blur(2px); opacity: 0.7; }
@@ -543,12 +561,15 @@ export default function BMO() {
         .loading-dots div:nth-child(1) { animation: blink 0.9s step-end infinite; animation-delay: 0s; }
         .loading-dots div:nth-child(2) { animation: blink 0.9s step-end infinite; animation-delay: 0.3s; }
         .loading-dots div:nth-child(3) { animation: blink 0.9s step-end infinite; animation-delay: 0.6s; }
+        .bmo-container { transition: box-shadow 0.15s; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
+        .bmo-container:hover { box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
       `}</style>
       <div
         ref={bmoRef}
         role="button"
         tabIndex={0}
-        className={`cursor-pointer ${bmoBounce ? 'bmo-bounce' : ''} ${bmoWiggle ? 'bmo-wiggle' : ''}`}
+        style={{ cursor: 'pointer' }}
+        className={`${bmoBounce ? 'bmo-bounce' : ''} ${bmoWiggle ? 'bmo-wiggle' : ''}`}
         onClick={(e) => {
           e.stopPropagation();
           if (isBooting) return;
@@ -605,10 +626,21 @@ export default function BMO() {
         }}
         aria-label="BMO companion - click or press Enter to interact"
       >
-        <div className="w-16 h-12 bg-teal-400 rounded border-2 border-black overflow-hidden shadow-md transition-all hover:shadow-lg relative">
+        <div
+          className="bmo-container"
+          style={{
+            width: 64,
+            height: 48,
+            backgroundColor: '#2dd4bf',
+            borderRadius: 4,
+            border: '2px solid black',
+            overflow: 'hidden',
+            position: 'relative',
+          }}
+        >
           {bmoFaces[bmoExpression]}
           {showSpinner && (bmoExpression === 'powerOff' || bmoExpression === 'powering') && (
-            <div className="absolute inset-0 flex items-center justify-center">
+            <div style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <div className="loading-dots">
                 <div></div>
                 <div></div>
